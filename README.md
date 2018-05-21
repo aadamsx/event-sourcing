@@ -14,7 +14,10 @@ Start rabbitmq in Terminal:
 $ rabbitmq-server
 ```
 
-Then run `yarn start`
+Then run:
+```
+yarn start
+```
 
 ## Basic Tests Usage
 
@@ -23,6 +26,7 @@ Install dependencies:
 yarn
 ```
 
+Then run:
 ```
 yarn basic
 ```
