@@ -3,3 +3,4 @@ coverage/
 npm-debug.log
 event_log.txt
 yarn-error.log
+.queues

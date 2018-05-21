@@ -1,51 +1,86 @@
 'use strict';
 
-const assert = require('assert');
-const Account = require('./account');
-const accountEvent = require('./accountEvent');
+const bus = require('servicebus').bus();
+// const assert = require('assert');
+// const Account = require('./account');
+// const accountEvent = require('./accountEvent');
+const Market = require('./market');
+
+// INSTRUCTIONS:
+// Start rabbitmq in Terminal with `$ rabbitmq-server`
+// Then run `yarn start`
 
 // eslint-disable-next-line
-const log = console.log
+const log = console.log;
 
-// Init
-accountEvent.reset();
+const dowJones = new Market();
 
-log('--- Create events ---');
+dowJones.initialize(1);
 
-// Open accounts
-Account.open('Samantha', 1000);
-Account.open('John', 500);
-Account.open('Suzzy', 0);
+dowJones.on('orderCreated', (order) => {
+  bus.publish('market.orderCreated', {
+    command: 'orderCreated',
+    data: {
+      order
+    }
+  });
+});
 
-log('Accounts are opened', Account.get());
+bus.subscribe('market.*', (msg) => {
+  switch (msg.command) {
+    case 'orderCreated':
+      log('An order was created!', `ID: ${msg.data.order.id}`);
+      break;
+    default:
+      msg.reject('Command not recognized');
+      break;
+  }
+});
 
-// Transfer some money
-Account.transferMoney('Samantha', 'John', 500);
-Account.transferMoney('Samantha', 'Suzzy', 500);
+let incrementId = 0;
+setInterval(() => {
+  dowJones.createOrder({ id: incrementId += 1 });
+}, 2000);
 
-log('Some money are transfered', Account.get());
+// // Init
+// accountEvent.reset();
 
-// Close some accounts
-Account.close('Samantha');
+// log('--- Create events ---');
 
-log('Samantha closed her account', Account.get());
+// // Open accounts
+// Account.open('Samantha', 1000);
+// Account.open('John', 500);
+// Account.open('Suzzy', 0);
 
-/* ********** Playing with Event Sourcing events ********** */
+// log('Accounts are opened', Account.get());
 
-log('--- Process events ---');
+// // Transfer some money
+// Account.transferMoney('Samantha', 'John', 500);
+// Account.transferMoney('Samantha', 'Suzzy', 500);
 
-// Rebuild from event log
-log('Rebuild accounts from event log', accountEvent.rebuild());
-assert.deepEqual(Account.get(), accountEvent.rebuild());
+// log('Some money are transfered', Account.get());
 
-// Undo last event
-log('Undo last event', accountEvent.undo(Account.get(), 1));
+// // Close some accounts
+// Account.close('Samantha');
 
-// Undo last two events
-log('Undo last two event', accountEvent.undo(Account.get(), 2));
+// log('Samantha closed her account', Account.get());
 
-// Query first step
-log('Query first step', accountEvent.query(1));
+// /* ********** Playing with Event Sourcing events ********** */
 
-// Query second step
-log('Query second step', accountEvent.query(2));
+// log('--- Process events ---');
+
+// // Rebuild from event log
+// log('Rebuild accounts from event log', accountEvent.rebuild());
+// assert.deepEqual(Account.get(), accountEvent.rebuild());
+
+// // Undo last event
+// log('Undo last event', accountEvent.undo(Account.get(), 1));
+
+// // Undo last two events
+// log('Undo last two event', accountEvent.undo(Account.get(), 2));
+
+// // Query first step
+// log('Query first step', accountEvent.query(1));
+
+// // Query second step
+// log('Query second step', accountEvent.query(2));

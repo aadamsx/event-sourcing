@@ -25,6 +25,9 @@
     "eslint-plugin-promise": "3.4.0"
   },
   "dependencies": {
-    "lodash": "4.17.4"
+    "inherits": "^2.0.3",
+    "lodash": "4.17.4",
+    "servicebus": "^2.2.0",
+    "sourced": "^0.1.4"
   }
 }
