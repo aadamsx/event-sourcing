@@ -1,8 +1,17 @@
-# event-sourcing-example
+# Event Sourcing
 
-Event Sourcing Example repo for the Node.js at Scale blog series
+## App Usage
 
-## Usage
+If you're on a Mac, follow these instructions - [Installing RabbitMQ with Homebrew](https://www.rabbitmq.com/install-homebrew.html)
+
+Start rabbitmq in Terminal:
+```
+$ rabbitmq-server
+```
+
+Then run `yarn start`
+
+## Basic Tests Usage
 
 ```
 npm start
