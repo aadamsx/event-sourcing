@@ -4,6 +4,11 @@
 
 If you're on a Mac, follow these instructions - [Installing RabbitMQ with Homebrew](https://www.rabbitmq.com/install-homebrew.html)
 
+Install dependencies:
+```
+yarn
+```
+
 Start rabbitmq in Terminal:
 ```
 $ rabbitmq-server
@@ -13,8 +18,13 @@ Then run `yarn start`
 
 ## Basic Tests Usage
 
+Install dependencies:
 ```
-npm start
+yarn
+```
+
+```
+yarn basic
 ```
 
 Console output:
