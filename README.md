@@ -19,7 +19,7 @@ Then run:
 yarn start
 ```
 
-## Basic Tests Usage
+## Basic Example Usage
 
 Install dependencies:
 ```
